@@ -5,7 +5,7 @@ import 'package:example/place.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart' as gc;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() => runApp(MyApp());
@@ -29,14 +29,14 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  late ClusterManager _manager;
+  late gc.ClusterManager _manager;
 
   Completer<GoogleMapController> _controller = Completer();
 
   Set<Marker> markers = Set();
 
   final CameraPosition _parisCameraPosition =
-      CameraPosition(target: LatLng(48.856613, 2.352222), zoom: 12.0);
+  CameraPosition(target: LatLng(48.856613, 2.352222), zoom: 12.0);
 
   List<Place> items = [
     for (int i = 0; i < 10; i++)
@@ -72,8 +72,8 @@ class MapSampleState extends State<MapSample> {
     super.initState();
   }
 
-  ClusterManager _initClusterManager() {
-    return ClusterManager<Place>(items, _updateMarkers,
+  gc.ClusterManager _initClusterManager() {
+    return gc.ClusterManager<Place>(items, _updateMarkers,
         markerBuilder: _markerBuilder);
   }
 
@@ -111,8 +111,8 @@ class MapSampleState extends State<MapSample> {
     );
   }
 
-  Future<Marker> Function(Cluster<Place>) get _markerBuilder =>
-      (cluster) async {
+  Future<Marker> Function(gc.Cluster<Place>) get _markerBuilder =>
+          (cluster) async {
         return Marker(
           markerId: MarkerId(cluster.getId()),
           position: cluster.location,
@@ -156,6 +156,6 @@ class MapSampleState extends State<MapSample> {
     final img = await pictureRecorder.endRecording().toImage(size, size);
     final data = await img.toByteData(format: ImageByteFormat.png) as ByteData;
 
-    return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
+    return BitmapDescriptor.bytes(data.buffer.asUint8List());
   }
 }

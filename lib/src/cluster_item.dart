@@ -6,6 +6,7 @@ mixin ClusterItem {
   LatLng get location;
 
   String? _geohash;
+
   String get geohash => _geohash ??=
       Geohash.encode(location, codeLength: ClusterManager.precision);
 }
